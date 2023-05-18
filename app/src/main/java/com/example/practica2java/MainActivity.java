@@ -29,19 +29,20 @@ public class MainActivity extends AppCompatActivity {
         String pesoString = pesoEditText.getText().toString();
         String alturaString = alturaEditText.getText().toString();
 
-        if (pesoString.equals("") || alturaString.equals("")) {
-            Toast.makeText(MainActivity.this,
-                    "Ingresa el Peso y la Altura",Toast.LENGTH_SHORT).show();
+        if (!pesoString.isEmpty() && !alturaString.isEmpty()) {
+            try {
+                double peso = Double.parseDouble(pesoString);
+                double altura = Double.parseDouble(alturaString);
+
+                double imc = peso / (altura * altura);
+                resultadoTextView.setText(String.format("Tu IMC es: %.2f kg/m²", imc));
+            } catch (NumberFormatException e) {
+                Toast.makeText(getApplicationContext(), "Ingresa el Peso y la Altura", Toast.LENGTH_LONG).show();
+            }
         } else {
-            float peso = Float.parseFloat(pesoString);
-            float altura = Float.parseFloat(alturaString) / 100;
-
-            float imc = peso / (altura * altura);
-            DecimalFormat df = new DecimalFormat("#.##");
-            String imcRedondeado = df.format(imc);
-
-            resultadoTextView.setText(String.format("Tu IMC es: %s kg/m²", imcRedondeado));
+            Toast.makeText(getApplicationContext(), "Ingresa el Peso y la Altura", Toast.LENGTH_LONG).show();
         }
+
     }
 
     public void limpiarCampos(View view) {
